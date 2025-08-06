@@ -1,0 +1,116 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lana Rose | AI Fan Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    input, button {
+      padding: 0.75rem;
+      margin: 0.25rem 0;
+      width: 100%;
+      max-width: 300px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    input {
+      background: #222;
+      color: #fff;
+    }
+    button {
+      background: hotpink;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #chat, #paywall {
+      margin-top: 2rem;
+      display: none;
+    }
+    #chat p {
+      background: #222;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Lana Rose AI 💖</h1>
+  <div id="auth">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="signUp()">Sign Up</button>
+    <button onclick="signIn()">Login</button>
+  </div>
+
+  <div id="paywall">
+    <p>🔒 Exclusive content locked. Subscribe to unlock Lana's full experience.</p>
+    <button onclick="unlock()">💸 Unlock Now</button>
+  </div>
+
+  <div id="chat">
+    <p>Hey babe 😘 I'm Lana. Ask me anything…</p>
+    <input type="text" id="message" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+    <div id="response"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const supabaseUrl = 'https://poxmewylzgrundwkymtn.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBveG1ld3lsemdydW5kd2t5bXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ0ODE0NzgsImV4cCI6MjA3MDA1NzQ3OH0.2PMSvD45zTVre-_GvW3bmWx4FIFV0nygCpQ2PBk4G94';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function signUp() {
+      const { data, error } = await supabase.auth.signUp({
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      });
+      if (error) alert(error.message);
+      else {
+        alert("Signup successful. Check your email.");
+      }
+    }
+
+    async function signIn() {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      });
+      if (error) alert(error.message);
+      else {
+        document.getElementById('auth').style.display = 'none';
+        document.getElementById('paywall').style.display = 'block';
+      }
+    }
+
+    function unlock() {
+      document.getElementById('paywall').style.display = 'none';
+      document.getElementById('chat').style.display = 'block';
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById('message').value;
+      const responseBox = document.getElementById('response');
+      responseBox.innerHTML = `<p><strong>You:</strong> ${msg}</p><p><strong>Lana:</strong> That’s so hot 😘 tell me more...</p>`;
+    }
+  </script>
+</body>
+</html>
